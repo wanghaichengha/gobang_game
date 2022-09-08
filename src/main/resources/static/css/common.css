@@ -1,0 +1,39 @@
+/*公共样式*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    background-image: url(../image/image.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.nav {
+    height: 50px;
+    background-color: rgb(100,100,100);
+    color: white;
+    line-height: 50px;
+    display: flex;
+}
+.nav span {
+    padding-left: 20px;
+    font-size: 20px;
+    font-style: italic;
+    font-family: 'Courier New', Courier, monospace;
+}
+.nav .spacer {
+    width: 80%;
+}
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 20px;
+    font-style: italic;
+    font-family: 'Courier New', Courier, monospace;
+
+}

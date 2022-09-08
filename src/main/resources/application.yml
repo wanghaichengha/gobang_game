@@ -1,0 +1,15 @@
+#配置数据库连接
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/gobang_game?characterEncoding=utf8
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#配置mybatis xml文件保存路径
+mybatis:
+  mapper-locations: classpath:mybatis/**Mapper.xml
+
+#配置端口号
+server:
+  port: 8082

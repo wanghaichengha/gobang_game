@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextAPI</title>
+</head>
+<body>
+
+    <input type="text" id="message">
+    <button id="submit">提交</button>
+
+    <script>
+        //创建websocket实例
+        var websocket = new WebSocket("ws://127.0.0.1:8080/text");
+        //需要配合实例挂载一些回调函数
+        websocket.onopen = function(){
+            console.log("建立连接！");
+        }
+        websocket.onmessage = function(e){
+            console.log("收到消息：" + e.data);
+        }
+        websocket.onerror = function(){
+            console.log("出现异常！");
+        }
+        websocket.onclose = function(){
+            console.log("连接关闭！");
+        }
+
+        let message = document.querySelector('#message');
+        let button = document.querySelector('#submit');
+        button.onclick = function(){
+            websocket.send(message.value);
+        }
+    </script>
+    
+</body>
+</html>

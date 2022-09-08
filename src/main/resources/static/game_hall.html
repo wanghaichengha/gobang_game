@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏大厅</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/gamg_hall.css">
+</head>
+<body>
+
+    <div class="nav">
+        <span>五子棋大战</span>
+    </div>
+    <div class="container">
+        <div>
+            <div id="screen"></div>
+
+            <div id="match_button">开始匹配</div>
+        </div>
+    </div>
+
+    <script src="./JS/jquery.min.js"></script>
+    <script>
+        $.ajax({
+            type: 'get',
+            url: '/userinfo',
+            success: function(body){
+                let screenDiv = document.querySelector('#screen');
+                screenDiv.innerHTML = "玩家:"+ body.username +'   ' + "分数:" + body.score
+                 + "<br> 比赛场数:" + body.totalCount +'   '+ "获胜场数:" + body.winCount;
+        
+            },
+            error: function(){
+                alert("获取用户信息失败！");
+            }
+        });
+
+        //初始化webSocket,创建实例
+        let websocketUrl = 'ws://' + location.host + '/findMatch';
+        var websocket = new WebSocket(websocketUrl);
+        //需要配合实例挂载一些回调函数
+        websocket.onopen = function(){
+            console.log("建立连接！");
+        }
+        //处理服务器返回的数据
+        websocket.onmessage = function(e){
+            //将返回的json字符串转为js对象
+            let result = JSON.parse(e.data);
+            let matchbutton = document.querySelector('#match_button');
+            if(!result.ok){
+                console.log("接收响应失败！" + result.reason);
+                return;
+            }
+            if(result.message == 'startMatch'){
+                console.log("进入匹配队列");
+                matchbutton.innerHTML = '匹配中...(点击停止)';
+            }else if(result.message == 'stopMatch'){
+                //结束匹配请求发送成功
+                console.log("离开匹配队列");
+                matchbutton.innerHTML = '开始匹配';
+                
+            }else if(result.message == 'matchSuccess'){
+                //已经匹配到对手
+                console.log("匹配成功！进入游戏房间。");
+                location.replace('/game_room.html');
+
+            }else if(result.message == 'repeatConnection'){
+                console.log("禁止多开，请用其他账号登录！");
+                //location.assign('/login.html')
+                location.replace('/login.html');
+
+            }else{
+                console.log("收到非法数据 message=" + result.message);
+            }
+
+            
+        }
+        websocket.onerror = function(){
+            console.log("出现异常！");
+        }
+        websocket.onclose = function(){
+            console.log("连接关闭！");
+        }
+        //监听页面关闭事件，在页面关闭之前，手动调用这里的webSocket的close方法
+        window.onbeforeprint = function(){
+            websocket.close();
+        }
+
+        let matchbutton = document.querySelector('#match_button');
+        matchbutton.onclick = function(){
+            //需要先确认webScoret是否已经连接成功
+            if(websocket.readyState == websocket.OPEN){
+                //如果当前webScoret状态是open则是连接成功
+                if(matchbutton.innerHTML == '开始匹配'){
+                    console.log("开始匹配");
+                    websocket.send(JSON.stringify({
+                        message: 'startMatch',
+                    }));
+                }else if(matchbutton.innerHTML == '匹配中...(点击停止)'){
+                    console.log("停止匹配");
+                    websocket.send(JSON.stringify({
+                        message: 'stopMatch',
+                    }));
+                }
+            }else{
+                //说明当前连接状态处于异常状态
+                alert("连接已断开，请重新登录！")
+                location.replace('/login.html')
+            }
+            
+        }
+    </script>
+
+    
+</body>
+</html>

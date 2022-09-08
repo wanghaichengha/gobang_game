@@ -1,0 +1,36 @@
+.container {
+    width: 100%;
+    height: calc(100% - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container #screen {
+    width: 400px;
+    height: 200px;
+    font-size: 20px;
+    background-color: gray;
+    color: white;
+    border-radius: 10px;
+
+    text-align: center;
+    line-height: 100px;
+}
+.container #match_button {
+    width: 400px;
+    height: 50px;
+    font-size: 20px;
+    color: white;
+    background-color: orange;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    text-align: center;
+    line-height: 50px;
+    margin-top: 20px;
+}
+.container #match_button:active {
+    background-color: gray;
+}
+

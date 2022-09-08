@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="nav">
+        <span>五子棋大战</span>
+        <span class="spacer"></span>
+        <a href="register.html">注册</a>
+        <a href="game_hall.html">游戏大厅</a>
+        <a href="#">注销</a>
+
+    </div>
+    <div class="login-container">
+        <!--登录界面-->
+        <div class="login-dialog">
+            <h3>
+                登录
+            </h3>
+            <div class="row">
+                <span>用户名</span>
+                <input type="text" id="username">
+            </div>
+            <div class="row">
+                <span>密码</span>
+                <input type="password" id="password">
+            </div>
+            <div class="row">
+                <button id="submit">提交</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="./JS/jquery.min.js"></script>
+    <script>
+        let usernameInupt = document.querySelector('#username');
+        let passwordInupt = document.querySelector('#password');
+        let submitButton = document.querySelector('#submit');
+        submitButton.onclick = function(){
+            $.ajax({
+                type: 'post',
+                url: '/login',
+                data: {
+                    username: usernameInupt.value,
+                    password: passwordInupt.value
+
+                },
+                success: function(body){
+                    //判断服务器返回数据是否有效
+                    if(body && body.userId > 0){
+                        alert("登录成功！");
+                        location.assign('/game_hall.html');
+                    }else{
+                        alert("登录失败！");
+                    }
+
+                },
+                Error: function(){
+                    alert("登录失败！");
+                }
+            })
+        }
+
+
+    </script>
+    
+</body>
+</html>

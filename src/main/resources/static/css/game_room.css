@@ -1,0 +1,17 @@
+
+.container {
+    width: 100%;
+    height: calc(100% - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#screen {
+    width: 450px;
+    height: 50px;
+    margin-top: 10px;
+    background-color: #fff;
+    font-size: 22px;
+    line-height: 50px;
+    border-radius: 10px;
+}
